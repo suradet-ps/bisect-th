@@ -1,9 +1,40 @@
+param(
+    [string]$Orig = '',
+    [string]$Trans = (Join-Path $PSScriptRoot '..\guide\src')
+)
+
 $ErrorActionPreference = 'Stop'
-$orig = 'C:\Users\goyga\Desktop\suradet-ps\cargo-bisect-rustc\guide\src'
-$trans = 'C:\Users\goyga\Desktop\suradet-ps\bisect-th\guide\src'
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
+
+$trans = [System.IO.Path]::GetFullPath($Trans)
+
+if ([string]::IsNullOrWhiteSpace($Orig)) {
+    $candidates = @(
+        (Join-Path $PSScriptRoot '..\..\cargo-bisect-rustc\guide\src'),
+        (Join-Path $PSScriptRoot '..\cargo-bisect-rustc\guide\src'),
+        (Join-Path (Get-Location) 'cargo-bisect-rustc\guide\src')
+    )
+    foreach ($cand in $candidates) {
+        if (Test-Path -LiteralPath $cand) {
+            $Orig = $cand
+            break
+        }
+    }
+}
+
+if ([string]::IsNullOrWhiteSpace($Orig) -or (-not (Test-Path -LiteralPath $Orig))) {
+    Write-Error "Cannot find upstream cargo-bisect-rustc guide/src directory.`nPlease provide the path using: ./scripts/verify-translation.ps1 -Orig <path-to-cargo-bisect-rustc/guide/src>"
+    exit 1
+}
+
+$orig = [System.IO.Path]::GetFullPath($Orig)
+Write-Output "Comparing translation against upstream:"
+Write-Output "  Upstream:    $orig"
+Write-Output "  Translation: $trans"
 
 function Read-Normalized($path) {
-    return ([System.IO.File]::ReadAllText($path)).Replace("`r`n", "`n")
+    return ([System.IO.File]::ReadAllText($path, [System.Text.Encoding]::UTF8)).Replace("`r`n", "`n")
 }
 
 function Get-CodeBlocks($path) {
@@ -28,6 +59,22 @@ function Get-InlineLinkTargets($path) {
     $content = Read-Normalized $path
     $rx = [regex]'\[[^\]]*\]\(([^)]+)\)'
     return @($rx.Matches($content) | ForEach-Object { $_.Groups[1].Value -replace '\s+$','' })
+}
+
+function Normalize-LinkTarget($url) {
+    if ([string]::IsNullOrWhiteSpace($url)) {
+        return ''
+    }
+    $trimmed = $url.Trim()
+    # In-page anchor link (anchors are translated to Thai slugs and checked by check-links.ps1)
+    if ($trimmed.StartsWith('#')) {
+        return '#anchor'
+    }
+    # File link with in-page anchor (e.g. usage.md#regression-check vs usage.md#การตรวจสอบรีเกรสชัน)
+    if ($trimmed -match '^([^#]+)#(.+)$') {
+        return $Matches[1]
+    }
+    return $trimmed
 }
 
 $origFiles = Get-ChildItem -Recurse -File $orig -Filter *.md
@@ -81,8 +128,8 @@ foreach ($f in $origFiles) {
         $fail++
     } else {
         for ($i = 0; $i -lt $or.Count; $i++) {
-            $ourl = ($or[$i] -split ':\s*',2)[1]
-            $turl = ($tr[$i] -split ':\s*',2)[1]
+            $ourl = Normalize-LinkTarget (($or[$i] -split ':\s*',2)[1])
+            $turl = Normalize-LinkTarget (($tr[$i] -split ':\s*',2)[1])
             if ($ourl -cne $turl) {
                 Write-Output "[FAIL] $rel : ref-link #$($i+1) url differs (orig='$ourl' trans='$turl')"
                 $fail++
@@ -90,8 +137,8 @@ foreach ($f in $origFiles) {
         }
     }
 
-    $oi = Get-InlineLinkTargets $f.FullName
-    $ti = Get-InlineLinkTargets $tPath
+    $oi = @(Get-InlineLinkTargets $f.FullName | ForEach-Object { Normalize-LinkTarget $_ })
+    $ti = @(Get-InlineLinkTargets $tPath | ForEach-Object { Normalize-LinkTarget $_ })
     $os = $oi | Sort-Object -Unique
     $ts = $ti | Sort-Object -Unique
     $missing = @($os | Where-Object { $_ -notin $ts })

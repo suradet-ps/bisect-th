@@ -26,6 +26,17 @@ jobs:
       run: |
         cd guide
         mdbook build
+    - name: Checkout upstream cargo-bisect-rustc
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      with:
+        repository: rust-lang/cargo-bisect-rustc
+        path: cargo-bisect-rustc
+        depth: 1
+        persist-credentials: false
+    - name: Verify translation vs upstream
+      shell: pwsh
+      run: |
+        ./scripts/verify-translation.ps1 -Orig ./cargo-bisect-rustc/guide/src
     - name: Check links
       shell: pwsh
       run: |

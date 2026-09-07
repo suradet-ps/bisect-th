@@ -2,6 +2,8 @@ param(
     [string]$BookDir = (Join-Path $PSScriptRoot '..\guide\book')
 )
 $ErrorActionPreference = 'Stop'
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+$OutputEncoding = [System.Text.Encoding]::UTF8
 $book = [System.IO.Path]::GetFullPath($BookDir)
 
 $files = Get-ChildItem -Recurse -File $book -Filter *.html

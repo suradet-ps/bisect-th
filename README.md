@@ -13,6 +13,9 @@
 
 ## ◆ PULSE
 
+[![GitHub Pages](https://img.shields.io/badge/Pages-live-2ea44f)](https://suradet-ps.github.io/bisect-th/)
+[![License](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg)](#-anatomy)
+
 A rustc regression has a first nightly, and a first PR - bisect-th is
 the Thai bridge to that exact moment. This is the complete Thai
 translation of the official `cargo-bisect-rustc` guide: 21 chapters
@@ -21,7 +24,7 @@ code block byte-identical to the original. The links are checked
 against the built book (117 anchors), the structure mirrors the
 upstream repo file-for-file, and the license travels with the text.
 Built for the Thai-speaking student of rustc:
-[github.com/suradet-ps/bisect-th](https://github.com/suradet-ps/bisect-th).
+[suradet-ps.github.io/bisect-th](https://suradet-ps.github.io/bisect-th/).
 
 | แปลครบ 21 บท ▣ | Glossary ▣ | ลิงก์ 117/117 ▣ | Build ผ่าน ▣ |
 |---|---|---|---|
@@ -52,10 +55,13 @@ One runtime, three commands.
 Open [http://localhost:3000](http://localhost:3000).
 
 ```
-⟫ mdbook build guide          # static HTML into guide/book
-⟫ powershell scripts/verify-translation.ps1   # byte-exact check vs upstream
-⟫ powershell scripts/check-links.ps1          # all anchors in the built book
+⟫ mdbook build guide                                  # static HTML into guide/book
+⟫ powershell scripts/check-links.ps1                  # all anchors in the built book (pwsh on Linux/macOS)
+⟫ powershell scripts/verify-translation.ps1           # byte-exact check vs upstream
 ```
+
+> On Linux or macOS, run the verification scripts using `pwsh scripts/<script>.ps1`.
+> `verify-translation.ps1` checks against `cargo-bisect-rustc` in adjacent directories or via `-Orig <path>`.
 
 <details>
 <summary>Translating a chapter</summary>
@@ -73,7 +79,7 @@ stripped), so anchors are copied from the built HTML, never guessed.
 
 ## ◆ ANATOMY
 
-One stack, zero JS, several quiet helpers.
+One stack, zero custom JS, several quiet helpers.
 
 - **Translates** - the complete guide: introduction, installation,
   usage, tutorial, boundaries, rustup, git bisect, alt builds, and 11
@@ -82,14 +88,14 @@ One stack, zero JS, several quiet helpers.
   รีเกรสชัน, baseline = เบสไลน์, toolchain = ทูลเชน), so chapter nine
   agrees with chapter two.
 - **Verifies** - `scripts/verify-translation.ps1` diffs every code
-  block, heading level, and link URL against the upstream repo -
-  byte-exact or it does not pass.
+  block, heading level, and link target against upstream
+  `cargo-bisect-rustc` - byte-exact or it does not pass.
 - **Checks** - `scripts/check-links.ps1` walks the built book and
   resolves every anchor link against real heading ids - 117 of them,
   all reachable.
-- **Builds** - mdbook renders static HTML into `guide/book/`, no
-  JavaScript, no runtime, readable offline and searchable by your
-  editor of choice.
+- **Builds** - mdbook renders static HTML into `guide/book/`, zero
+  server runtime, readable offline and searchable by built-in static
+  index.
 - **Licenses** - MIT OR Apache-2.0, inherited from upstream, with the
   LICENSE files shipped beside the text.
 
@@ -99,8 +105,9 @@ One stack, zero JS, several quiet helpers.
 
 **The core ceremony** - the translation pass:
 
-1. Open a chapter in `guide/src/`. The upstream file sits beside it
-   in the original repo - structure is a contract.
+1. Open a chapter in `guide/src/`. The upstream `cargo-bisect-rustc`
+   repo sits beside it (clone `https://github.com/rust-lang/cargo-bisect-rustc`
+   alongside `bisect-th`) - structure is a contract.
 2. Translate the prose; keep every code block and command as the
    original wrote it.
 3. Consult `GLOSSARY.md` for every term that already has a canon.
@@ -137,7 +144,8 @@ the SUMMARY. Open an issue first to discuss a change.
 
 **Status** - on every change: `mdbook build guide` must pass, the
 translation verifier must report byte-exact code blocks across all 22
-files, and the link checker must report `ALL ANCHOR LINKS OK`.
+files (21 chapters + `SUMMARY.md`), and the link checker must report
+`ALL ANCHOR LINKS OK`.
 [Watch the gates](scripts).
 
 [![GitHub Pages](https://img.shields.io/badge/Pages-live-2ea44f)](https://suradet-ps.github.io/bisect-th/)
@@ -152,4 +160,4 @@ files, and the link checker must report `ALL ANCHOR LINKS OK`.
 ```
 
 Translated from the [cargo-bisect-rustc](https://github.com/rust-lang/cargo-bisect-rustc)
-guide, which is licensed under the [MIT OR Apache-2.0](LICENSE-MIT).
+guide, which is licensed under [MIT](LICENSE-MIT) OR [Apache-2.0](LICENSE-APACHE).

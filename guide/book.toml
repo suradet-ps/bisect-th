@@ -1,0 +1,5 @@
+[book]
+language = "th"
+title = "cargo-bisect-rustc (ฉบับภาษาไทย)"
+
+[output.html]

@@ -140,6 +140,8 @@ translation verifier must report byte-exact code blocks across all 22
 files, and the link checker must report `ALL ANCHOR LINKS OK`.
 [Watch the gates](scripts).
 
+[![GitHub Pages](https://img.shields.io/badge/Pages-live-2ea44f)](https://suradet-ps.github.io/bisect-th/)
+
 ---
 
 ```

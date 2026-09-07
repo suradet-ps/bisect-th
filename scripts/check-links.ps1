@@ -1,5 +1,8 @@
+param(
+    [string]$BookDir = (Join-Path $PSScriptRoot '..\guide\book')
+)
 $ErrorActionPreference = 'Stop'
-$book = 'C:\Users\goyga\Desktop\suradet-ps\bisect-th\guide\book'
+$book = [System.IO.Path]::GetFullPath($BookDir)
 
 $files = Get-ChildItem -Recurse -File $book -Filter *.html
 $broken = @()

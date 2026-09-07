@@ -8,7 +8,7 @@
 | baseline | เบสไลน์ | จุดที่โปรเจกต์บิลด์ผ่าน |
 | bisect / bisecting | ไบเซกต์ | การค้นหาแบบแบ่งครึ่ง (binary search) |
 | boundary | ขอบเขต | จุดเริ่มต้น/สิ้นสุดของการไบเซกต์ |
-| nightly | ไนต์ลี | รุ่น nightly ของ Rust |
+| nightly | nightly (คงชื่อเดิม) | ชื่อทูลเชนเฉพาะ เช่น `nightly-2023-01-01` จึงคงศัพท์อังกฤษทั้งเล่ม |
 | toolchain | ทูลเชน | |
 | compiler | คอมไพเลอร์ | |
 | compile | คอมไพล์ | |
@@ -17,9 +17,10 @@
 | standard library | ไลบรารีมาตรฐาน | |
 | rustup | rustup | คงชื่อเดิม |
 | cargo | cargo | คงชื่อเดิม |
-| PR | พีอาร์ (PR) | pull request |
+| PR | PR (คงชื่อเดิม) | pull request; ใช้ "พีอาร์" ได้ในบริบทเล่าเรื่อง |
 | rollup PR | โรลอัป พีอาร์ | |
-| commit | คอมมิต | |
+| commit | คอมมิต | คำกริยา "merge" คงศัพท์อังกฤษตามบริบท git |
+| hash | hash (คงชื่อเดิม) | SHA-1 hash เป็นชื่อเฉพาะ |
 | git | git | คงชื่อเดิม |
 | ICE | ข้อผิดพลาดภายในคอมไพเลอร์ (ICE) | Internal Compiler Error |
 | diagnostic(s) | ไดแอกโนสติกส์ | ข้อความเตือน/ข้อผิดพลาดจากคอมไพเลอร์ |

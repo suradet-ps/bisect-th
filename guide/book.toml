@@ -3,3 +3,5 @@ language = "th"
 title = "cargo-bisect-rustc (ฉบับภาษาไทย)"
 
 [output.html]
+git-repository-url = "https://github.com/suradet-ps/bisect-th/tree/main/guide/src"
+edit-url-template = "https://github.com/suradet-ps/bisect-th/edit/main/guide/{path}"

@@ -26,13 +26,13 @@ upstream repo file-for-file, and the license travels with the text.
 Built for the Thai-speaking student of rustc:
 [suradet-ps.github.io/bisect-th](https://suradet-ps.github.io/bisect-th/).
 
-| แปลครบ 21 บท ▣ | Glossary ▣ | ลิงก์ 117/117 ▣ | Build ผ่าน ▣ |
+| 21 chapters translated ▣ | Glossary ▣ | Links 117/117 ▣ | Build passing ▣ |
 |---|---|---|---|
 
-*v1.0.0 - translation, glossary, verification, and the static build
-are all sealed.*
+*Translation, glossary, verification, and the static build are all
+sealed.*
 
-> Built with mdbook 0.5 + Markdown, translated from
+> Built with mdbook 0.5.4 + Markdown, translated from
 > [rust-lang/cargo-bisect-rustc](https://github.com/rust-lang/cargo-bisect-rustc),
 > verified by script and rendered as static HTML - a guide with the
 > pages on the page.
@@ -82,10 +82,11 @@ stripped), so anchors are copied from the built HTML, never guessed.
 One stack, zero custom JS, several quiet helpers.
 
 - **Translates** - the complete guide: introduction, installation,
-  usage, tutorial, boundaries, rustup, git bisect, alt builds, and 11
-  example chapters - Thai prose over untouched code.
-- **Glossaries** - `GLOSSARY.md` locks the vocabulary (regression =
-  รีเกรสชัน, baseline = เบสไลน์, toolchain = ทูลเชน), so chapter nine
+  usage, tutorial, the rust source repo, boundaries, rustup, git
+  bisect, alt builds, and 11 example chapters - Thai prose over
+  untouched code.
+- **Glossaries** - `GLOSSARY.md` locks the vocabulary (regression,
+  baseline, toolchain, and every recurring term), so chapter nine
   agrees with chapter two.
 - **Verifies** - `scripts/verify-translation.ps1` diffs every code
   block, heading level, and link target against upstream
@@ -116,9 +117,9 @@ One stack, zero custom JS, several quiet helpers.
    byte-exact, and the anchors resolve.
 
 **The ceremony of the anchor** - mdbook slugs strip Thai tone marks
-(`การเขียนสคริปต์` becomes `การเขียนสคริปต`). Anchors are read from
-the built HTML, written into the source, and re-verified - a guessed
-anchor is a broken link waiting to happen.
+from heading ids. Anchors are read from the built HTML, written into
+the source, and re-verified - a guessed anchor is a broken link
+waiting to happen.
 
 **The ceremony of the code block** - a translated command that is not
 byte-identical to the original is a regression, not a translation.
@@ -152,8 +153,8 @@ files (21 chapters + `SUMMARY.md`), and the link checker must report
 
 ```
   ─────────────────────────────────────────
-   ทุกรีเกรสชันมี nightly แรกของมัน
-   ทุกหนังสือมีหน้าแรกของมัน
+   Every regression has its first nightly.
+   Every book has its first page.
   ─────────────────────────────────────────
 ```
 

@@ -31,7 +31,7 @@ jobs:
       with:
         repository: rust-lang/cargo-bisect-rustc
         path: cargo-bisect-rustc
-        depth: 1
+        fetch-depth: 1
         persist-credentials: false
     - name: Lint the gates
       run: cargo clippy --locked --all-targets -- -D warnings

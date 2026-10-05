@@ -27,7 +27,7 @@ sealed.*
 
 > Built with mdbook 0.5.4 + Markdown, translated from
 > [rust-lang/cargo-bisect-rustc](https://github.com/rust-lang/cargo-bisect-rustc),
-> verified by script and rendered as static HTML - a guide with the
+> verified by a Rust CLI and rendered as static HTML - a guide with the
 > pages on the page.
 >
 > **suradet-ps**, artifact keeper
@@ -48,13 +48,14 @@ One runtime, three commands.
 Open [http://localhost:3000](http://localhost:3000).
 
 ```
-⟫ mdbook build guide                                  # static HTML into guide/book
-⟫ powershell scripts/check-links.ps1                  # all anchors in the built book (pwsh on Linux/macOS)
-⟫ powershell scripts/verify-translation.ps1           # byte-exact check vs upstream
+⟫ mdbook build guide                                 # static HTML into guide/book
+⟫ cargo run -- verify                                # byte-exact check vs upstream
+⟫ cargo run -- check-links                           # all anchors in the built book
 ```
 
-> On Linux or macOS, run the verification scripts using `pwsh scripts/<script>.ps1`.
-> `verify-translation.ps1` checks against `cargo-bisect-rustc` in adjacent directories or via `-Orig <path>`.
+> The gates are a Rust CLI under `src/`. Defaults assume the repository
+> root: `verify` finds upstream `cargo-bisect-rustc` beside the repo (or
+> pass `--orig <path>`), and `check-links` reads `guide/book`.
 
 <details>
 <summary>Translating a chapter</summary>
@@ -72,7 +73,7 @@ stripped), so anchors are copied from the built HTML, never guessed.
 
 ## ◆ ANATOMY
 
-One stack, zero custom JS, several quiet helpers.
+One stack, zero custom JS, one Rust gatekeeper.
 
 - **Translates** - the complete guide: introduction, installation,
   usage, tutorial, the rust source repo, boundaries, rustup, git
@@ -81,10 +82,10 @@ One stack, zero custom JS, several quiet helpers.
 - **Glossaries** - `GLOSSARY.md` locks the vocabulary (regression,
   baseline, toolchain, and every recurring term), so chapter nine
   agrees with chapter two.
-- **Verifies** - `scripts/verify-translation.ps1` diffs every code
+- **Verifies** - `src/verify.rs` diffs every code
   block, heading level, and link target against upstream
   `cargo-bisect-rustc` - byte-exact or it does not pass.
-- **Checks** - `scripts/check-links.ps1` walks the built book and
+- **Checks** - `src/links.rs` walks the built book and
   resolves every anchor link against real heading ids - 117 of them,
   all reachable.
 - **Builds** - mdbook renders static HTML into `guide/book/`, zero
@@ -132,7 +133,7 @@ P4 ▸ glossary, license, link verification, mdbook build ───────�
 ```
 
 **Raising the artifact** - the honest path lives in `GLOSSARY.md`
-(term canon), `scripts/` (the verification gate), and `guide/book.toml`
+(term canon), `src/` (the verification gate), and `guide/book.toml`
 (book config). New chapters follow the frontmatter-free contract of
 the SUMMARY. Open an issue first to discuss a change.
 
@@ -140,7 +141,7 @@ the SUMMARY. Open an issue first to discuss a change.
 translation verifier must report byte-exact code blocks across all 22
 files (21 chapters + `SUMMARY.md`), and the link checker must report
 `ALL ANCHOR LINKS OK`.
-[Watch the gates](scripts).
+[Watch the gates](src).
 
 ---
 

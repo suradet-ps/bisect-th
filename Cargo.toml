@@ -1,0 +1,14 @@
+[package]
+name = "bisect-th"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+description = "Verification gates for the bisect-th Thai translation of the cargo-bisect-rustc guide"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/suradet-ps/bisect-th"
+
+[dependencies]
+regex = "1"
+
+[profile.release]
+strip = true
